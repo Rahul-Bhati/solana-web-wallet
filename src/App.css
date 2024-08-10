@@ -1,5 +1,10 @@
 .App {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
+  width: 70%;
 }
 
 .App-logo {
@@ -12,6 +17,8 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
+
 
 .App-header {
   background-color: #282c34;
@@ -35,4 +42,56 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+h1 {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}
+#mnemo{
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.btn{
+  background-color: #282c34;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin: 10px;
+} 
+
+.mul-wallet p{
+  font-size: 12px;
+}
+
+input{
+  width: 70%;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  margin: 10px;
+}
+
+.wallet{
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px;
+  font-size: 1.5vw;
+}
+
+@media screen and (max-width: 600px) {
+  .App {
+    width: 90%;
+  }
+
+  .wallet{
+    font-size: 2vw;
+  }
+  
 }
