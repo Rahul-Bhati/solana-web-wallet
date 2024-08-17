@@ -102,11 +102,11 @@ input {
 
 @media screen and (max-width: 600px) {
   .App {
-    width: 90%;
+    width: 100%;
   }
 
-  .wallet {
-    font-size: 2vw;
+  .mul_wallet p {
+    font-size: 3vw;
   }
 
 }

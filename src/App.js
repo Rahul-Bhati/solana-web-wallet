@@ -66,27 +66,66 @@ function App() {
     getBalance();
   };
 
+  const copyTextAndSHowMsg = () => {
+    if (mnemonic !== "") {
+      navigator.clipboard
+        .writeText(mnemonic)
+        .then(() => {
+          // alert("Mnemonic copied to clipboard!");
+          // show copied text for 2 seconds on cursor position
+          const copied = document.createElement("div");
+          copied.style.position = "absolute";
+
+          // it should be absolute to p tag
+
+          copied.style.top = "0";
+          copied.style.right = "0";
+          copied.style.backgroundColor = "black";
+          copied.style.color = "white";
+          copied.style.padding = "5px";
+          copied.style.fontSize = "10px";
+          copied.style.borderRadius = "5px";
+          copied.style.zIndex = "999";
+          copied.innerText = "copied!";
+          document.getElementById("mnemo").appendChild(copied);
+          setTimeout(() => {
+            copied.remove();
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error("Failed to copy mnemonic: ", err);
+        });
+    }
+  };
+
   return (
     <>
       <div className="App">
         <h1>Web Wallet Solana</h1>
         <p
           id="mnemo"
-          style={{ background: "#f1f1f1", cursor: "pointer" }}
-          onClick={() => {
-            if (mnemonic !== "") {
-              navigator.clipboard
-                .writeText(mnemonic)
-                .then(() => {
-                  alert("Mnemonic copied to clipboard!");
-                })
-                .catch((err) => {
-                  console.error("Failed to copy mnemonic: ", err);
-                });
-            }
+          style={{
+            background: "#f1f1f1",
+            position: "relative",
+            padding: "20px",
           }}
         >
           {mnemonic ? mnemonic : "Click below button to generate mnemonic"}
+
+          <button
+            style={{
+              position: "absolute",
+              top: "0",
+              right: "0",
+              fontWeight: "400",
+              color: "gray",
+              fontSize: "12px",
+              cursor: "pointer",
+            }}
+            onClick={copyTextAndSHowMsg}
+          >
+            copy
+          </button>
         </p>
         <button onClick={generateMne} className="btn">
           generateMnemonic
@@ -104,7 +143,7 @@ function App() {
           <button className="btn" onClick={genMultipleWallet}>
             Generate Wallets
           </button>
-          <div>
+          <div style={{ padding: "10px 20px" }} className="mul_wallet">
             {wallets.map((wallet, index) => (
               <div key={wallet}>
                 <div className="display_wallet">
@@ -122,15 +161,6 @@ function App() {
                 <hr />
               </div>
             ))}
-            {/* {wallets.map((wallet, index) => (
-              <div key={wallet} className="display_wallet">
-                <p className="wallet">{wallet}</p>
-                <button className="btn" onClick={getBalance}>
-                  Balance
-                </button>
-                {balance ? <p className="wallet">Balance {balance}</p> : null}
-              </div>
-            ))} */}
           </div>
         </div>
       </div>
