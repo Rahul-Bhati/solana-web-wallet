@@ -7,6 +7,9 @@ import {
   PublicKey,
   LAMPORTS_PER_SOL,
   clusterApiUrl,
+  Transaction,
+  SystemProgram,
+  sendAndConfirmTransaction,
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import { useState } from "react";
@@ -18,6 +21,8 @@ function App() {
   const [change, setChange] = useState("");
   const [wallets, setWallets] = useState([]);
   const [balance, setBalance] = useState({});
+
+  const [toWallet, setToWallet] = useState("");
 
   const generateMne = () => {
     setMnemonic(bip39.generateMnemonic());
@@ -34,9 +39,36 @@ function App() {
     const path = `m/44'/501'/${wallets.length}'/0'`;
     const keypair = Keypair.fromSeed(hd.derive(path).privateKey);
     const publicKey = keypair.publicKey.toBase58();
+    const privateKey = keypair.secretKey;
 
-    // console.log(publicKey);
-    setWallets([...wallets, publicKey]);
+    const newKeyPair = {
+      publicKey,
+      privateKey,
+    };
+
+    // console.log(newKeyPair);
+    // const newKeypair = Keypair.fromSecretKey(Uint8Array.from(privateKey));
+    // const derivedPublicKey = newKeypair.publicKey.toBase58();
+
+    // // Verify if the derived public key matches the original public key
+    // const isSameKeypair = derivedPublicKey === publicKey;
+    // console.log(
+    //   "Are the public and private keys from the same keypair?",
+    //   isSameKeypair
+    // );
+
+    // push ele in array with kepping prev ele in array
+
+    // walletsArr.push(newKeyPair);
+
+    // setWallets((prev) => [...prev, publicKey]);
+    // // setWallets([...wallets, keypair]);
+
+    // console.log(walletsArr);
+
+    setWallets((prevWallets) => [...prevWallets, newKeyPair]);
+
+    console.log(wallets);
   };
 
   const getBalance = async (walletAddress) => {
@@ -98,6 +130,79 @@ function App() {
     }
   };
 
+  const airDrop = async (publicKey) => {
+    const connection = new Connection(
+      "https://solana-devnet.g.alchemy.com/v2/ADwgZClZhC47WLuGbuf8LLaqVPeJN2py",
+      "confirmed"
+    );
+
+    try {
+      const airDropSignature = await connection.requestAirdrop(
+        new PublicKey(publicKey),
+        LAMPORTS_PER_SOL
+      );
+      await connection.confirmTransaction(airDropSignature);
+
+      console.log(`Airdropped 1 SOL to ${publicKey}`);
+
+      // const lamportsToSend = 1_000_000;
+
+      // const transferTransaction = new Transaction().add(
+      //   SystemProgram.transfer({
+      //     fromPubkey: publicKey,
+      //     toPubkey: publicKey,
+      //     lamports: lamportsToSend,
+      //   })
+      // );
+
+      // await sendAndConfirmTransaction(connection, transferTransaction, [
+      //   // fromKeypair,
+      // ]);
+
+      // console.log("Transaction successful");
+    } catch (error) {
+      if (error.message.includes("429")) {
+        console.error("Too many airdrop requests. Please wait 24 hours.");
+      } else {
+        console.error("An error occurred:", error);
+      }
+    }
+  };
+
+  const transfer = async (from, to) => {
+    const fromPrivateKey = from.privateKey;
+    const fromPublicKey = new PublicKey(from.publicKey);
+    const toPublicKey = new PublicKey(to);
+
+    // convert the fromPrivateKey or fromPublicKey to Keypair
+    const fromKeypair = Keypair.fromSecretKey(fromPrivateKey);
+
+    const connection = new Connection(
+      "https://solana-devnet.g.alchemy.com/v2/ADwgZClZhC47WLuGbuf8LLaqVPeJN2py",
+      "confirmed"
+    );
+
+    try {
+      const lamportsToSend = 1_000_000;
+
+      const transferTransaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: fromPublicKey,
+          toPubkey: toPublicKey,
+          lamports: lamportsToSend,
+        })
+      );
+
+      await sendAndConfirmTransaction(connection, transferTransaction, [
+        fromKeypair,
+      ]);
+
+      console.log("Transaction successful");
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
   return (
     <>
       <div className="App">
@@ -143,21 +248,56 @@ function App() {
           <button className="btn" onClick={genMultipleWallet}>
             Generate Wallets
           </button>
+
+          <h3>Transaction</h3>
+          <p>
+            Step 1. Click on the "Get Balance" button to get the balance of the
+            wallet
+          </p>
+          <p>
+            Step 2. Click on the "Airdrop" button to airdrop 1 SOL to the wallet
+          </p>
+          <p>
+            Step 3. Click on the "Transfer" button to transfer 0.001 SOL from
+            the wallet to itself
+          </p>
+
           <div style={{ padding: "10px 20px" }} className="mul_wallet">
             {wallets.map((wallet, index) => (
-              <div key={wallet}>
+              <div key={wallet.publicKey}>
                 <div className="display_wallet">
-                  <p className="wallet">{wallet}</p>
+                  <p className="wallet">{wallet.publicKey}</p>
                   <button
                     className="btn Get_Balance"
-                    onClick={() => getBalance(wallet)}
+                    onClick={() => getBalance(wallet.publicKey)}
                   >
                     Get Balance
                   </button>
-                  {balance[wallet] !== undefined ? (
-                    <p className="wallet">{balance[wallet]} SOL</p>
+
+                  {balance[wallet.publicKey] !== undefined ? (
+                    <p className="wallet">{balance[wallet.publicKey]} SOL</p>
                   ) : null}
+
+                  <button
+                    className="btn Get_Balance"
+                    onClick={() => airDrop(wallet.publicKey)}
+                  >
+                    Airdrop
+                  </button>
                 </div>
+
+                <input
+                  // style={{ width: "50%" }}
+                  type="text"
+                  placeholder="Paste any of the wallet address where you want to transfer"
+                  onChange={(e) => setToWallet(e.target.value)}
+                />
+                <button
+                  className="btn"
+                  onClick={() => transfer(wallet, toWallet)}
+                >
+                  Transfer
+                </button>
                 <hr />
               </div>
             ))}
