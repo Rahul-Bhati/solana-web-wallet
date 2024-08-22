@@ -1,38 +1,275 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #1E201E;
+  box-sizing: border-box;
+}
+
 .App {
+  width: 100%;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: #3C3D37;
+  color: #fff;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(226, 217, 217, 0.1);
+  /* width: 600px; */
+  max-width: 600px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.phrase-container {
+  margin-bottom: 20px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.phrase-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.phrase-input {
+  padding: 10px;
+  border: 1px solid #697565;
+  border-radius: 4px;
+  text-align: center;
+  color: #fff;
+  background: #697565;
+  width: 20%;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.btn-1 {
+  margin: 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: space-between; */
+  justify-content: center;
+  gap: 50px;
+}
+
+#mnemonics {
+  background-color: #FFF078;
+  color: #1E201E;
+  width: 40%;
+}
+
+#toggleView {
+  width: 30%;
+}
+
+#create_wallet {
+  background-color: #FFA07A;
+  color: #1E201E;
+  margin-top: 50px;
+  width: 40%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
+
+.card {
+  background-color: #3C3D37;
+  color: #fff;
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(226, 217, 217, 0.1);
+  width: 400px;
+  max-width: 600px;
+  /* width: 100%; */
+  text-align: center;
+}
+
+.card .card-body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 10px;
+}
+
+.card input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #697565;
+  border-radius: 4px;
+  text-align: center;
+  background: #697565;
+  color: hsl(0, 0%, 100%);
+}
+
+.card input::placeholder {
+  color: hsl(0, 0%, 100%);
+}
+
+.airdrop-inputs {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.airdrop-inputs .transfer-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#airdropButton {
+  width: 100%;
+}
+
+.mul-wallet {
+
+  display: flex;
+  padding: 20px;
+  /* margin: 10px; */
+  /* flex-direction: column;
+  align-items: center; */
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.key {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+}
+
+.key span {
+  width: 50%;
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  justify-content: baseline;
+  align-items: baseline;
+  /* align-self: center; */
+}
+
+.key input {
+  width: 100%;
+}
+
+.heading2 {
+  margin-top: 30px;
+  margin-bottom: 0;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+}
+
+.card-2 {
+  display: flex;
+  justify-content: space-around;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 20px;
+  border: 1px solid #c3e6cb;
+  width: 40px;
+  float: right;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  background: #3C3D37;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.social-links {
+  display: flex;
+  gap: 30px;
+}
+
+.social-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 30px;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+    display: flex;
+    justify-content: center;
+    /* width: 100%;
+    width: 80%; */
   }
-  to {
-    transform: rotate(360deg);
+
+  .container {
+    width: 90%;
+  }
+
+  .phrase-input {
+    width: 45%;
+  }
+
+  .btn-1 {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #mnemonics {
+    width: 100%;
+  }
+
+  #toggleView {
+    width: 100%;
+  }
+
+  #create_wallet {
+    width: 100%;
+  }
+
+  .card-2 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 400px;
   }
 }
