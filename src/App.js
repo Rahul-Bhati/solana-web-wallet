@@ -7,7 +7,6 @@ import {
   Connection,
   PublicKey,
   LAMPORTS_PER_SOL,
-  clusterApiUrl,
   Transaction,
   SystemProgram,
   sendAndConfirmTransaction,
@@ -24,7 +23,6 @@ function App() {
   const [pubKeyForAirdrop, setPubKeyForAirdrop] = useState("");
   const [fromPrivateKey, setFromPrivateKey] = useState("");
   const [toPublicKey, setToPublicKey] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
 
   const generateMne = () => {
     setMnemonic(bip39.generateMnemonic());
@@ -161,10 +159,6 @@ function App() {
       </div>
       <div className="card-2">
         <div className="card">
-          {successMessage && (
-            <div className="success-message">{successMessage}</div>
-          )}
-
           <h2>Airdrop</h2>
           <div className="airdrop-inputs">
             <input
