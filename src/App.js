@@ -13,6 +13,7 @@ import {
 } from "@solana/web3.js";
 import { Buffer } from "buffer";
 import WalletCard from "./components/WalletCard";
+import Token from "./components/Token";
 
 window.Buffer = Buffer;
 
@@ -61,6 +62,8 @@ function App() {
         LAMPORTS_PER_SOL
       );
       await connection.confirmTransaction(airDropSignature);
+
+      console.log("Airdrop complete");
     } catch (error) {
       if (error.message.includes("429")) {
         console.error("Too many airdrop requests. Please wait 24 hours.");
@@ -246,6 +249,8 @@ function App() {
           </a>
         </div>
       </div>
+
+      {/* <Token /> */}
     </>
   );
 }
